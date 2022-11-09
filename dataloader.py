@@ -17,6 +17,7 @@ def clean_dataloader():
         os.remove(tmp_file)
 
 def download_duts_tr_dataset():
+    print(dataset_dir);
     if dataset_dir.exists():
         return
 
@@ -66,7 +67,8 @@ def load_training_batch(batch_size=12, in_shape=default_in_shape, out_shape=defa
     if cache is None:
         cache = os.listdir(image_dir)
     
-    imgs = random.choices(cache, k=batch_size)
+    tempimgs = list(filter(lambda x: "jpg" in x, cache))
+    imgs = random.choices(tempimgs, k=batch_size)
     image_list = [get_image_mask_pair(img, in_resize=default_in_shape, out_resize=default_out_shape) for img in imgs]
     
     tensor_in  = np.stack([i[0]/255. for i in image_list])
